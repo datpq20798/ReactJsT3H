@@ -1,0 +1,16 @@
+
+git init
+
+git config --global user.name "ĐạtPQ"  //User Name là mình
+git config --global user.email "datpq20798@gmail.com"
+
+git remote add origin <remote_url> //add đường dẫn remote
+;git remote set-url origin https://github.com/newuser/repo.git  //Thay đổi đường dẫn remte
+
+git branch <name_branch> //Tạo branch
+git checkout <name_branch> //Đổi sang branch khác (tên branch)
+
+
+git add .
+git commit -m "..." //ghi note "" để mn nhìn cho dễ hiểu
+git push origin master
