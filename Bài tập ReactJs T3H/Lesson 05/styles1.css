@@ -1,0 +1,130 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.navigation1{
+    width: 100%;
+    background-color: bisque;
+    display: flex;
+    justify-content: space-between;
+}
+
+.Logo1{
+    border: 1px solid black;
+	margin: 8px 10px;
+	padding: 12px;
+	text-align: center;
+    background-color: aqua;
+}
+.Menu1{
+    display: flex;
+    margin: 0px 10px;
+}
+.MenuBar1{
+    margin: 8px 0px;
+    padding: 12px;
+    width: 60px;
+    text-align: center;
+    border: 1px solid black;
+    background-color: darkkhaki;
+}
+.MenuBarHome{
+    border-left: none;
+    border-right: none ;
+}
+
+/* =================================================== */
+
+.navigation2{
+    width: 100%;
+    background-color: bisque;
+    display: flex;
+    justify-content: space-between;
+}
+.Left1{
+    display: flex;
+}
+.Logo2{
+    border: 1px solid black;
+    background-color: cadetblue;
+    padding: 12px;
+    margin: 8px 8px;
+    text-align: center;
+}
+.Text2{
+    text-align: center;
+    padding: 12px;
+}
+.Text2 h3{
+    margin: 8px 0px;
+}
+.Menu2{
+    display: flex;
+}
+.MenuBar2{
+    padding: 12px;
+    text-align: center;
+    margin: 8px 8px;
+    width: 80px;
+}
+.MenuBar2Login{
+    border: 1px solid black;
+    background-color: chartreuse;
+}
+
+/* =================================================== */
+
+.MenuBar2YourName{
+    width: 80px;
+}
+.MenuBar2Circle{
+    border-radius: 100%;
+    padding: 1px;
+    width: 45px;
+    border: 1px solid black;
+    background-color: cornflowerblue;
+}
+
+/* =================================================== */
+
+.navigation3{
+    width: 100%;
+    background-color: bisque;
+    display: flex;
+    justify-content: space-between;
+}
+.Circle{
+    border: 1px solid black;
+    background-color: cadetblue;
+    padding: 30px;
+    margin: 8px 15px;
+    border-radius: 100%;
+    
+}
+.center img{
+    margin: 8px 15px;
+    
+}
+
+.center p{
+    text-align: center;
+    margin: 0px 0px 10px 0px;
+    
+}
+.center {
+    display: flex;
+}
+
+.Menu2 img{
+    margin: 8px 15px;
+    width: 35px;
+    height: 35px;
+    padding: 15px;
+}
+.MenuBar3YourName{
+    padding: 12px;
+    text-align: center;
+    margin: 20px 8px;
+    width: 80px;
+}

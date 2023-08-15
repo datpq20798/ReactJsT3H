@@ -1,0 +1,42 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.Display{
+    width: 700px;
+    height: 600px;
+    margin: auto;
+    margin-top: 30px;
+}
+.Header{
+    border: 1px solid black;
+    background-color: bisque;
+    width: 100%;
+    padding: 13px;
+    text-align: center;
+
+}
+.SideBar{
+    display: flex;
+    margin-top: 10px;
+    
+}
+.LeftSideBar{
+    border: 1px solid black;
+    background-color: hotpink;
+    padding: 250px 50px;
+    
+    
+    text-align: center;
+}
+
+.Content{
+    border: 1px solid black;
+    background-color: aquamarine;
+    padding: 250px 250px;
+    text-align: center;
+    margin-left: 17px;
+    
+    
+}
