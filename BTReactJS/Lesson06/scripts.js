@@ -1,8 +1,8 @@
 // 1. In ra dãy số từ 1 đến 500.
-for(let i = 1; i <= 500; i++)
-{
-    console.log(i)
-}
+// for(let i = 1; i <= 500; i++)
+// {
+//     console.log(i)
+// }
 // =================================
 // 2. In ra các số chia hết cho 2 và 3 từ 1 đến 300.
 // for(let i = 1; i <= 300; i++)
@@ -170,11 +170,10 @@ for(let i = 1; i <= 500; i++)
 // 12. trò chơi đoán số
 // const maxAnswer = 5; //số lần nhập max là 5 trước khi thua
 // let a = 0; //số lần đoán
+// let correct = Math.floor(Math.random() * 5) + 1;
 // while(true){
 //     let answer = prompt("Mời bạn nhập số: ");
-//     let correct = Math.floor(Math.random() * 5) + 1;
 //     answer = Number(answer);
-    
 //     if(answer === correct){
 //         console.log("random là: " + correct, "số bạn nhập là: " + answer)
 //         console.log("Đoán đúng");
@@ -191,6 +190,8 @@ for(let i = 1; i <= 500; i++)
 //         }
 //     }
 // }
+
+
 // =================================
 // 13. Nhập vào số n (2 <= n <= 10). Hãy in ra bảng cửu chương của số n.
 // let n = prompt("Nhập số ");
@@ -265,3 +266,23 @@ for(let i = 1; i <= 500; i++)
 // }
 
 // =================================
+// 12. trò chơi đoán số (dùng do while)
+let a = 0; //số lần đoán
+let correct = Math.floor(Math.random() * 5) + 1;
+do{
+    let answer = parseInt(prompt("Mời bạn nhập số: "));
+    a ++;
+    if(answer === correct){
+        console.log("Đoán đúng");
+        break;
+    }
+    else if(a >= 5){
+        console.log("Bạn đã thua cuộc vì nhập quá 5 lần");
+        break;
+    }
+    else
+    {
+        console.log("Đoán sai");
+    }
+}
+while(true)
