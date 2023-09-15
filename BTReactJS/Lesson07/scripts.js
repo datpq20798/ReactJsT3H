@@ -149,52 +149,52 @@
 
 
 // 3. Nhập vào 2 dãy số d1, d2. Mỗi số trong mỗi dãy cách nhau bởi dấu ‘,’.
-// let arr1 = []
-// let arr2 = []
-// let count1 = 0
-// let count2 = 0
-// do {
-//     count1 ++;
-//     let n = parseInt(prompt("Nhập n cho d1"))
-//     arr1.push(n)
-// } while (count1 < 4);
-// do {
-//     count2 ++;
-//     let m = parseInt(prompt("Nhập m cho d2"))
-//     arr2.push(m)
-// } while (count2 < 4);
+let arr1 = []
+let arr2 = []
+let count1 = 0
+let count2 = 0
+do {
+    count1 ++;
+    let n = parseInt(prompt("Nhập n cho d1"))
+    arr1.push(n)
+} while (count1 < 4);
+do {
+    count2 ++;
+    let m = parseInt(prompt("Nhập m cho d2"))
+    arr2.push(m)
+} while (count2 < 4);
 
 // ý 3 thì commemt code này lại
-// let d1 = arr1.toString()
-// let d2 = arr2.toString()
-// console.log(d1)
-// console.log(d2)
+let d1 = arr1.toString()
+let d2 = arr2.toString()
+console.log(d1)
+console.log(d2)
 
 // Kiểm tra xem tất cả các giá trị số trong d1 có nằm trong d2 không.
-// let a = d1.split(',')
-// let b = d2.split(',')
-// console.log(a)
-// console.log(b)
-// let c = true;
-// for(let i = 0; i < a.length; i ++){
-//     let value1 = a[i];
-//     let d = false
-//     for(let j = 0; j < b.length; j ++){
-//         if (value1 === b[j]) {
-//             d = true;
-//             break
-//         }
-//     }
-//     if(!d){
-//         c = false
-//         break
-//     }
-// }
-// if(c){
-//     console.log(true);
-//   } else {
-//     console.log(false);
-//   }
+let a = d1.split(',')
+let b = d2.split(',')
+console.log(a)
+console.log(b)
+let c = true;
+for(let i = 0; i < a.length; i ++){
+    let value1 = a[i];
+    let d = false
+    for(let j = 0; j < b.length; j ++){
+        if (value1 === b[j]) {
+            d = true;
+            break
+        }
+    }
+    if(!d){
+        c = false
+        break
+    }
+}
+if(c){
+    console.log(true);
+  } else {
+    console.log(false);
+  }
 
 
 // Kiểm tra xem có phần tử nào trong d2 chia hết cho tổng của d1 không.
