@@ -639,17 +639,13 @@ let users = [
 //     let jobCounts = {};
 // for (let i = 0; i < users.length; i++) {
 //     let job = users[i].job;
-    
 //     if (jobCounts[job]) {
 //         jobCounts[job]++;
-        
 //     } else {
 //         jobCounts[job] = 1;
-        
 //     }
 // }
 // console.log(jobCounts);
-    
 // }
 // getJob()
 
