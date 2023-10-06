@@ -1,0 +1,35 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.Display{
+    width: 900px;
+    height: 600px;
+    margin: auto;
+    margin-top: 30px;
+    display: flex;
+}
+.LeftSideBar{
+    border: 1px solid black;
+    background-color: bisque;
+    padding: 298px 50px;
+}
+
+.Header{
+    border: 1px solid black;
+    background-color: darkgray;
+    padding: 25px 350px;
+    margin: 0px 0px 10px 10px;
+}
+.Content{
+    border: 1px solid black;
+    background-color: cadetblue;
+    padding: 210px 350px;
+    margin: 0px 0px 10px 10px;  
+}
+.Footer{
+    border: 1px solid black;
+    background-color: coral;
+    padding: 25px 350px;
+    margin: 0px 0px 10px 10px;
+}

@@ -1,0 +1,44 @@
+body{
+    font-size: 11px;
+    font-family: Arial, sans-serif;
+}
+.RegistrationForm{
+    border-radius: 8px;
+    
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px 2px;
+    width: 600px;
+    height: 550px;
+    background-color: lightgray;
+    margin: auto;
+    margin-top: 100px;
+
+}
+
+.title{
+    text-align: center;
+    padding-top: 10px;
+}
+
+
+.form{
+    display: flex;
+}
+
+.text{
+    margin-top: 7px;
+    width: 150px;
+    margin-left: 130px;
+
+    
+}
+
+.form input{
+    margin-top: 5px;
+    
+}
+
+textarea{
+    margin-top: 5px;
+}
+
