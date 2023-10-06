@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./DOM.js"></script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="homework1-2">
+        <div class="ChangepropertiesImg">
+            <div class="propertiesImg">
+                <p>URL</p>
+                <input type="text" id="URL" placeholder="Nhập Url" oninput="changePropertiesImg()">
+                <p>Chiều rộng (px)</p>
+                <input type="number" placeholder="Nhập Width" id="Width" oninput="changeWidth()">
+                <p>Chiều cao (px)</p>
+                <input type="number" placeholder="nhập Height" id="Height" oninput="changeHeight()">
+                <p>Bo góc</p>
+                <input type="number" placeholder="nhập Radius" id="Radius" oninput="changeRadius()">
+                <p>Alt</p>
+                <input type="text" placeholder="Nhập Alt" id="Alt" oninput="changeAlt()">
+    
+            </div>
+            <div class="IndexImg">
+                <img src="https://static.wixstatic.com/media/9d8ed5_b8fcc13f08fc4374bb1f979e032b0eb7~mv2.jpg/v1/fit/w_600,h_567,al_c,q_20,enc_auto/file.jpg" alt="anh1" id="img">
+            </div>
+        </div>
+    <br>
+    <br>
+        <!-- Bài 2 -->
+        <div id="todo">
+            <input type="text" id="todoInput">
+            <input type="button" value="Tạo công việc" onclick="todoList()" id="btnCreate">
+            <h2>Danh sách công việc cần làm: </h2>
+        <p id="list"></p>
+        </div>
+        
+        
+    </div>
+    <!-- Bài 3 -->
+    <div>
+        <h2>Danh sách người dùng:</h2>
+        <table id="table">
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Address</th>
+              <td></td>
+            </tr>
+            <!-- <tr>
+                <th>1</th>
+                <th>Name 1</th>
+                <th>Address 1</th>
+                <td>
+                    <input type="button" value="Xóa" onclick="btnDelete(this)">
+                </td>
+            </tr>
+            <tr>
+                <th>2</th>
+                <th>Name 2</th>
+                <th>Address 2</th>
+                <td>
+                    <input type="button" value="Xóa" onclick="btnDelete(this)">
+                </td>
+            </tr>
+            <tr>
+                <th>3</th>
+                <th>Name 3</th>
+                <th>Address 3</th>
+                <td>
+                    <input type="button" value="Xóa" onclick="btnDelete(this)">
+                </td>
+            </tr> -->
+          </table>
+    </div>
+   
+
+    <!-- Bài 4  -->
+    <div class="table2">
+        <div>
+            <label for="">Họ và tên *</label>
+            <input id="name" type="text">
+        </div>
+        <div>
+            <label for="">Giới tính</label>
+            <select name="gender" id="">
+                <option value="">Nam</option>
+                <option value="">Nữ</option>
+            </select>
+        </div>
+        <div>
+            <label for="">Tuổi</label>
+            <input id="age" type="text">
+        </div>
+        <div>
+            <label for="">Địa chỉ</label>
+            <input id="addr" type="text">
+        </div>
+        <div>
+            <label for="">Email *</label>
+            <input id="email" type="text">
+        </div>
+        <div>
+            <label for="">Pass *</label>
+            <input id="pass" type="password">
+        </div>
+        <div>
+            <input type="button" id="btncheck" value="đăng ký" onclick="Validate()">
+        </div>
+        
+    </div>
+
+
+
+
+
+
+
+<script>
+    createTable();
+</script>
+   
+
+</body>
+</html>

@@ -1,3 +1,4 @@
+
 export {SUM, SORT, SUM2, SUMODD, max2, countPerfectSquare}
 // *Các bài sau sẽ viết trong filee helpers.js dưới dạng module và import trong file main.js để sử dụng
 // Bài 5: Cho mảng A = [1,5,3,8,10]
@@ -7,7 +8,7 @@ let SUM = () => {
     let sum = 0;
     A.reduce((a, b) => a + b, 0)
     let avg = sum / A.length;
-    console.log(avg)
+    console.log(`giá trị trung bình của mảng là: ${avg}`)
 }
 
 
@@ -17,10 +18,10 @@ let SUM = () => {
 // 		Input: A = [1,5,3,8,10]
 // 		Output: A = [10, 8, 5, 3, 1]
 let B = [1,5,3,8,10]
-
+    
 let SORT = () => {
-    let newB = B.sort((a, b) => b - a)
-    console.log(newB)
+    let newB = [B.sort((a, b) => b - a)]
+    console.log(`mảng sau khi sắp xếp giảm dần: ${newB}`)
 }
 
 
@@ -32,7 +33,7 @@ for(let i in B){
         sum2 += B[i] 
     }
 }
-console.log(sum2)
+console.log(`tổng các số dương trong mảng là: ${sum2}`)
 }
 
 
@@ -40,13 +41,14 @@ console.log(sum2)
 let SUMODD = () => {
     let odd = B.filter((a) => a % 2 !== 0)
     let sumOdd = odd.reduce((a, b) => a + b,0)
-    console.log(sumOdd)
+    console.log(`tổng các số lẻ trong mảng là: ${sumOdd}`)
 }
 
 
 // 	+Tìm số lớn thứ 2 trong mảng
 // 		Output: 8
 let max2 = () => {
+    let newB = B.sort((a, b) => b - a)
     console.log(newB[1])
 }
 

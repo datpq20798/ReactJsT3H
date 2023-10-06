@@ -44,4 +44,12 @@
 //   console.log(playersModified);
 
 
-import {SUM, SORT, SUM2, SUMODD, max2, countPerfectSquare} from "./helpers"
+import {SUM, SORT, SUM2, SUMODD, max2, countPerfectSquare} from "./helpers.js"
+
+SUM()
+SORT()
+SUM2()
+SUMODD()
+max2()
+countPerfectSquare()
+
