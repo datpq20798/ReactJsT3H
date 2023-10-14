@@ -1,6 +1,6 @@
 import '../styles/Login.css'
-
-import { db } from '../../config/firebase'
+ 
+import { db } from '../config/firebase'
 import { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 
@@ -9,8 +9,11 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 
+
 const Login = () => {
     //Click thao tác qua lại giữa Login và Register
+    
+    
     const [isActive, setIsActive] = useState(false);
     const handleRegisterClick = () => {
         setIsActive(true);
@@ -52,57 +55,31 @@ const Login = () => {
         setPassValue(event.target.value);
     };
 
+    const settingToast = {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    }
     //Đoạn này check login nè
     const btnLogin = () => {
         if (validateEmail(emailValue) === false) {
-            toast.warn('Email chưa đúng định dạng', {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            toast.warn('Email chưa đúng định dạng', settingToast);
         }
         else if (passValue === '') {
-            toast.warn('Bạn chưa nhập Password', {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            toast.warn('Bạn chưa nhập Password', settingToast);
         }
         else {
             const icheck = studentList.find((i) => i.Email === emailValue && i.Password === passValue)
             if (icheck) {
-                toast.success('Đăng nhập thành công', {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
+                toast.success('Đăng nhập thành công', settingToast);
             }
             else {
-                toast.warn('Sai Email hoặc mật khẩu', {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
+                toast.warn('Sai Email hoặc mật khẩu', settingToast);
             }
         }
         // console.log(studentList);
@@ -115,77 +92,31 @@ const Login = () => {
     };
     const btnRegister = () => {
         if (validateEmail(emailValue) === false) {
-            toast.warn('Email chưa đúng định dạng', {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            toast.warn('Email chưa đúng định dạng', settingToast);
         }
         else if (passValue === '') {
-            toast.warn('Bạn chưa nhập Password', {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            toast.warn('Bạn chưa nhập Password', settingToast);
         }
         else if (nameValue === '') {
-            toast.warn('Bạn chưa nhập Name', {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            toast.warn('Bạn chưa nhập Name', settingToast);
         } else {
             const icheck = studentList.find((i) => i.Email === emailValue)
             if (icheck) {
-                toast.warn(`Email ${emailValue} này đã được đăng ký`, {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
+                toast.warn(`Email ${emailValue} này đã được đăng ký`, settingToast);
             }
             else {
-                toast.success(`Bạn đã đăng ký thành công`, {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
+                toast.success(`Bạn đã đăng ký thành công`, settingToast);
             }
         }
 
-
     }
-
     //Phần JSX 
     return (
-        <>
+        <>  
+            <div className='bodyLogin'>
             <ToastContainer />
-            <div className={`container ${isActive ? 'active' : ''}`} id="container" >
-                <div className="form-container sign-up">
+            <div className={`containerLogin ${isActive ? 'active' : ''}`} id="container" >
+                <div className="form-containerLogin sign-up">
                     <div className='form'>
                         <h1>Create Account</h1>
                         <div className="social-icons">
@@ -201,7 +132,7 @@ const Login = () => {
                         <button onClick={btnRegister}>Sign Up</button>
                     </div>
                 </div>
-                <div className="form-container sign-in">
+                <div className="form-containerLogin sign-in">
                     <div className='form'>
                         <h1>Sign In</h1>
                         <div className="social-icons">
@@ -218,7 +149,7 @@ const Login = () => {
                         <button onClick={btnLogin}>Sign In</button>
                     </div>
                 </div>
-                <div className="toggle-container">
+                <div className="toggle-containerLogin">
                     <div className="toggle">
                         <div className={`toggle-panel toggle-left ${isActive ? 'active' : ''}`}>
                             <h1>Welcome Back!</h1>
@@ -233,6 +164,10 @@ const Login = () => {
                     </div>
                 </div>
             </div>
+            </div>
+            
+            
+            
         </>
 
     )
