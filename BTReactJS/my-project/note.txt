@@ -1,0 +1,16 @@
+Cài đặt:
+
+//cài đặt toastify
+1. npm install --save react-toastify
+
+//cài đặt firebase
+2. npm install firebase
+
+//cài đặt router
+3. npm i react-router-dom
+
+//cài đặt boxicons
+4. npm i boxicons
+
+//cài đặt Sass
+5. 
