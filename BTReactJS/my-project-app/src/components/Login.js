@@ -23,14 +23,14 @@ const Login = () => {
     };
 
     //Lấy dữ liệu fisebase
-    const [studentList, setStudentList] = useState([])
-    const studentsColection = collection(db, "MngStudents")
+    const [accountList, setAccountList] = useState([])
+    const loginColection = collection(db, "MngLogin")
     useEffect(() => {
         const getStudent = async () => {
             try {
-                const data = await getDocs(studentsColection)
+                const data = await getDocs(loginColection)
                 const renderData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-                setStudentList(renderData)
+                setAccountList(renderData)
             } catch (err) {
                 console.error(err)
             }
@@ -74,7 +74,7 @@ const Login = () => {
             toast.warn('Bạn chưa nhập Password', settingToast);
         }
         else {
-            const icheck = studentList.find((i) => i.Email === emailValue && i.Password === passValue)
+            const icheck = accountList.find((i) => i.Email === emailValue && i.Password === passValue)
             if (icheck) {
                 toast.success('Đăng nhập thành công', settingToast);
             }
@@ -82,7 +82,7 @@ const Login = () => {
                 toast.warn('Sai Email hoặc mật khẩu', settingToast);
             }
         }
-        // console.log(studentList);
+        // console.log(accountList);
         // console.log(studentName2);
     }
     //Đoạn này check đăng ký nè
@@ -100,7 +100,7 @@ const Login = () => {
         else if (nameValue === '') {
             toast.warn('Bạn chưa nhập Name', settingToast);
         } else {
-            const icheck = studentList.find((i) => i.Email === emailValue)
+            const icheck = accountList.find((i) => i.Email === emailValue)
             if (icheck) {
                 toast.warn(`Email ${emailValue} này đã được đăng ký`, settingToast);
             }
@@ -145,6 +145,7 @@ const Login = () => {
 
                         <input type="email" placeholder="Email" onChange={inputEmailValue} />
                         <input type="password" placeholder="Password" onChange={inputPassValue} />
+                        
                         <a href="#">Forget Your Password?</a>
                         <button onClick={btnLogin}>Sign In</button>
                     </div>

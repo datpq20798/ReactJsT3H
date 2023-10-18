@@ -1,12 +1,15 @@
-import { Button, Input, Table, Switch, Image  } from 'antd';
+import { Button, Input, Table, Switch, Image } from 'antd';
 import '../styles/MngStudents.css'
+//import firebase config
 import { db } from '../config/firebase'
 import { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
-import {DeleteTwoTone,} from '@ant-design/icons';
 
+import { DeleteTwoTone, UserAddOutlined, ImportOutlined, ExportOutlined } from '@ant-design/icons';
+import { Link } from "react-router-dom"
 
 const MngStudents = () => {
+    
 
     //lấy dữ liệu firebase
     const [studentList, setStudentList] = useState([])
@@ -17,33 +20,37 @@ const MngStudents = () => {
                 const data = await getDocs(studentsColection)
                 const renderData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
                 setStudentList(renderData)
-                
+
             } catch (err) {
                 console.error(err)
             }
         }
         getStudent()
     }, [])
-    
+
     //Phân trang
     const [tableParams, setTableParams] = useState({
         pagination: {
-          current: 1,
-          pageSize: 3,
+            current: 1,
+            pageSize: 3,
         },
-      });
+    });
     const handleTableChange = (pagination, filters, sorter) => {
         setTableParams({
-          pagination,
-          filters,
-          ...sorter,
+            pagination,
+            filters,
+            ...sorter,
         });
         if (pagination.pageSize !== tableParams.pagination?.pageSize) {
             setTableParams([]);
         }
-      };
+    };
 
-    
+    const studentDetail = (Name) =>{
+        const detail = studentList.find((a) => a.NameStudents === Name)
+        console.log("key: ",Name)
+    }
+
 
     //tạo tên cột
     const columns = [
@@ -63,11 +70,13 @@ const MngStudents = () => {
             dataIndex: 'StudentCode',
             key: 'StudentCode',
             
+
         },
         {
             title: 'Họ và tên',
             dataIndex: 'NameStudents',
             key: 'NameStudents',
+            render: (Name) =>  <Button style={{marginLeft:-15}} onClick={()=>studentDetail(Name)}  type="link"  >{Name}</Button>,
             // sorter: (a, b) => a.NameStudents - b.NameStudents
         },
         {
@@ -84,17 +93,30 @@ const MngStudents = () => {
             title: 'Xếp loại',
             dataIndex: 'Classification',
             key: 'Classification',
+            filters: [
+                {
+                  text: 'Xuất sắc',
+                  value: 'Xuất sắc',
+                },
+                {
+                  text: 'Giỏi',
+                  value: 'Giỏi',
+                },
+                {
+                    text: 'Khá',
+                    value: 'Khá',
+                },
+                {
+                    text: 'Trung bình',
+                    value: 'Trung bình',
+                },
+              ]
             // sorter: (a, b) => a.Rank - b.Rank
         },
         {
             title: 'Email',
             dataIndex: 'Email',
             key: 'Email',
-        },
-        {
-            title: 'Password',
-            dataIndex: 'Password',
-            key: 'Password',
         },
 
         {
@@ -117,14 +139,22 @@ const MngStudents = () => {
     const onSearch = (value, _e, info) => console.log(info?.source, value);
     const { Search } = Input;
 
-    
+
 
     return (
         <div className='bodyMngStudents'>
             <div className="containerMngStudents">
                 <div className="headerMngStudents">
-                    <Search className='searchMngStudents' placeholder="Tìm kiếm" onSearch={onSearch} enterButton />
-                    <Button className='addMngStudents' type="primary">+ Add</Button>
+                    <div className='headerMngStudents-left'>
+                        <Search className='searchMngStudents' placeholder="Tìm kiếm" onSearch={onSearch} enterButton />
+                    </div>
+                    <div className='headerMngStudents-right'>
+                       
+                        <Button className='addMngStudents' type="primary"><UserAddOutlined /><Link to='/addstudents'>Add</Link></Button>
+                        <Button className='importMngSdtudent' type="primary"><ImportOutlined />Import</Button>
+                        <Button className='exportMngSdtudent' type="primary"><ExportOutlined />Export</Button>
+
+                    </div>
                 </div>
                 <div className='titleMngStudents'>
                     <p>Số lượng: {studentList.length}</p>
@@ -132,17 +162,12 @@ const MngStudents = () => {
                 <div>
                     <Table
                         columns={columns}
-                        expandable={{
-                            expandedRowRender: (Info) => (
-                                Info.Address
-                            ),
-                        }}
                         dataSource={studentList}
                         pagination={tableParams.pagination}
                         onChange={handleTableChange}
-                        
+
                     />
-                    
+
                 </div>
 
             </div>
