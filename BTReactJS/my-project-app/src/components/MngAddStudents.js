@@ -1,22 +1,20 @@
 import '../styles/MngAddStudents.css'
-import { PlusOutlined } from '@ant-design/icons';
-import React, { useState } from 'react';
+import { PlusOutlined, UserAddOutlined, CloseOutlined } from '@ant-design/icons';
+import React, { useState, useEffect } from 'react';
+import { db } from '../config/firebase'
+
+import { collection, getDocs } from 'firebase/firestore';
 import {
     Button,
-    Cascader,
-    Checkbox,
     DatePicker,
     Form,
     Input,
     InputNumber,
-    Radio,
     Select,
-    Slider,
-    Switch,
-    TreeSelect,
     Upload,
-    Modal
+    Modal,
 } from 'antd';
+import Password from 'antd/es/input/Password';
 
 const getBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -59,15 +57,36 @@ const MngAddStudents = () => {
     );
 
 
-    const { RangeDate } = DatePicker;
-    const { TextArea } = Input;
-    const normFile = (e) => {
-        if (Array.isArray(e)) {
-            return e;
-        }
-        return e?.fileList;
-    };
 
+    const { TextArea } = Input;
+
+    //lấy dữ liệu firebase
+    const [studentList, setStudentList] = useState([])
+    const studentsColection = collection(db, "MngStudents")
+    useEffect(() => {
+        const getStudent = async () => {
+            try {
+                const data = await getDocs(studentsColection)
+                const renderData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+                setStudentList(renderData)
+
+            } catch (err) {
+                console.error(err)
+            }
+        }
+        getStudent()
+    }, [])
+
+    //Gen mã sinh viên
+    let countStudentCode = studentList.length
+    const genStudentCode = () => {
+        let prefix = "SV";
+        let paddedNumber = String(countStudentCode).padStart(3, "0"); // Chuyển số thành chuỗi và thêm số 0 vào trước nếu cần
+        let studentID = prefix + paddedNumber;
+        countStudentCode++
+        return studentID;
+    }
+    let studentID = genStudentCode();
 
     return (
         <>
@@ -95,90 +114,125 @@ const MngAddStudents = () => {
                             </Modal>
                             <h5>Ảnh đại diện</h5>
                         </Form>
-                        
+
                     </div>
                     <div className='MngAddStudents-right'>
-                        <h5>Thông tin</h5>
-                        
-                        <Form.Item label="Họ và tên">
-                            <Input />
-                        </Form.Item>
-                    </div>
-                    {/* <Form.Item label="Input">
-                            <Input />
-                        </Form.Item>
-                        <Form.Item label="Select">
-                            <Select>
-                                <Select.Option value="demo">Demo</Select.Option>
-                            </Select>
-                        </Form.Item>
-                        <Form.Item label="TreeSelect">
-                            <TreeSelect
-                                treeData={[
-                                    {
-                                        title: 'Light',
-                                        value: 'light',
-                                        children: [
-                                            {
-                                                title: 'Bamboo',
-                                                value: 'bamboo',
-                                            },
-                                        ],
-                                    },
-                                ]}
-                            />
-                        </Form.Item>
-                        <Form.Item label="Cascader">
-                            <Cascader
-                                options={[
-                                    {
-                                        value: 'zhejiang',
-                                        label: 'Zhejiang',
-                                        children: [
-                                            {
-                                                value: 'hangzhou',
-                                                label: 'Hangzhou',
-                                            },
-                                        ],
-                                    },
-                                ]}
-                            />
-                        </Form.Item>
-                        <Form.Item label="DatePicker">
-                            <DatePicker />
-                        </Form.Item>
-                        <Form.Item label="RangePicker">
+                        <p>Tạo mới</p>
+                        <div className='formInfoStudents'>
+                            <div className='formInfoStudents-left'>
+                                <Form
+                                    labelCol={{ span: 8 }}
+                                    wrapperCol={{ span: 14 }}
+                                    layout="horizontal"
+                                    style={{ maxWidth: 600 }}
+                                >
 
-                        </Form.Item>
-                        <Form.Item label="InputNumber">
-                            <InputNumber />
-                        </Form.Item>
-                        <Form.Item label="TextArea">
-                            <TextArea rows={4} />
-                        </Form.Item>
-                        <Form.Item label="Switch" valuePropName="checked">
-                            <Switch />
-                        </Form.Item>
-                        <Form.Item label="Upload" valuePropName="fileList" getValueFromEvent={normFile}>
-                            <Upload action="/upload.do" listType="picture-card">
-                                <div>
-                                    <PlusOutlined />
-                                    <div
-                                        style={{
-                                            marginTop: 8,
-                                        }}
-                                    >
-                                        Upload
-                                    </div>
-                                </div>
-                            </Upload>
-                        </Form.Item>
-                        <Form.Item label="Button">
-                            <Button>Button</Button>
-                        </Form.Item>
-                        <Form.Item label="Slider">
-                            <Slider />
-                        </Form.Item> */}
+                                    <Form.Item label="Họ và tên">
+                                        <Input />
+                                    </Form.Item>
+
+                                    <Form.Item label="Email">
+                                        <Input />
+                                    </Form.Item>
+
+                                    <Form.Item label="Ngày sinh">
+                                        <DatePicker />
+                                    </Form.Item>
+
+                                    <Form.Item label="Số tín">
+                                        <InputNumber disabled value='null' />
+                                    </Form.Item>
+                                    <Form.Item label="Chức vụ">
+                                        <Select>
+                                            <Select.Option value=""></Select.Option>
+                                            <Select.Option value="Admin">Admin</Select.Option>
+                                            <Select.Option value="Giáo viên">Giáo viên</Select.Option>
+                                            <Select.Option value="Sinh viên">Sinh viên</Select.Option>
+                                        </Select>
+                                    </Form.Item>
+
+                                </Form>
+
+                            </div>
+                            <div className='formInfoStudents-center'>
+                                <Form
+                                    labelCol={{ span: 10 }}
+                                    wrapperCol={{ span: 14 }}
+                                    layout="horizontal"
+
+                                    style={{ maxWidth: 600 }}
+                                >
+                                    <Form.Item label="Giới tính">
+                                        <Select>
+                                            <Select.Option value="Nam">Nam</Select.Option>
+                                            <Select.Option value="Nữ">Nữ</Select.Option>
+                                        </Select>
+                                    </Form.Item>
+                                    <Form.Item label="Password">
+                                        <Password />
+                                    </Form.Item>
+                                    <Form.Item label="Xếp loại">
+                                        <Input disabled />
+
+                                    </Form.Item>
+                                    <Form.Item label="Điểm trung bình">
+                                        <InputNumber disabled value='0' />
+                                    </Form.Item>
+
+
+                                </Form>
+
+                            </div>
+                            <div className='formInfoStudents-right'>
+                                <Form
+                                    labelCol={{ span: 12 }}
+                                    wrapperCol={{ span: 14 }}
+                                    layout="horizontal"
+
+                                    style={{ maxWidth: 600 }}
+                                >
+
+                                    <Form.Item label="Mã sinh viên">
+                                        <Input disabled value={studentID} />
+                                    </Form.Item>
+                                    <Form.Item label="Số điện thoại">
+                                        <Input />
+                                    </Form.Item>
+                                    <Form.Item label="Xếp hạng">
+                                        <InputNumber disabled value='null' />
+                                    </Form.Item>
+
+                                    <Form.Item label="Khóa học">
+                                        <Input disabled value='null' />
+                                    </Form.Item>
+                                </Form>
+
+                            </div>
+
+
+                        </div>
+                        <div>
+                            <Form
+                                labelCol={{ span: 4 }}
+                                wrapperCol={{ span: 20 }}
+                                style={{ maxWidth: 600 }}
+
+                            > <Form.Item label="Địa chỉ">
+                                    <TextArea rows={4} />
+                                </Form.Item>
+
+
+                            </Form>
+
+                        </div>
+                        <div className='createStudent'>
+                            <Button type='primary'><UserAddOutlined />Create</Button>
+                            <Button type='primary'><CloseOutlined />Reset</Button>
+                        </div>
+
+
+                    </div>
+
 
                 </div>
             </div>
