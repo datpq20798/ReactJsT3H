@@ -1,0 +1,57 @@
+.bodyMngCourses{
+    background-color: #c9d6ff;
+    background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+.containerMngCourses{
+    background-color: #fff;
+    border-radius: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+
+    width: 55em;
+    max-width: 100%;
+    min-height: 480px;
+}
+
+.headerMngCourses{
+    display: flex;
+    justify-content:space-between;
+}
+
+.searchMngCourses{
+    width: 30em;
+    padding: 30px;
+}
+.addMngCourses{
+    font-weight: 500;
+}
+.headerMngCourses-right{
+    margin: 30px;
+}
+.titleMngCourses{
+    font-size: 14px;
+    margin: 10px 30px;
+    font-weight: 700;
+}
+
+
+.toolbar-wrapper{
+    border-radius: 50px;
+}
+.importMngSdtudent{
+    
+    margin-left: 30px;
+}
+.exportMngSdtudent{
+    margin-left: 30px;
+}
+.dataTableMngCourses{
+    padding: 0 20px;
+}
