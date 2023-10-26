@@ -3,11 +3,11 @@ import '../styles/Login.css'
 import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db, storage } from "../config/firebase.js"
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
-
+import { useNavigate, Link } from "react-router-dom";
 
 
 const Login = () => {
@@ -20,6 +20,23 @@ const Login = () => {
         setIsActive(false);
     };
 
+
+    //Xử lý input đăng nhập
+    const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const email = e.target[0].value;
+    const password = e.target[1].value;
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      toast.success('Đăng nhập thành công', settingToast);
+      navigate("/")
+    } catch (err) {
+        toast.warn('Email hoặc mật khẩu không chính xác', settingToast);
+    }
+  };
 
     //Xử lý input đăng ký
     const [name, setName] = useState('');
@@ -143,6 +160,7 @@ const Login = () => {
     return (
         <>
             <ToastContainer></ToastContainer>
+            <div className="body">
             <div className={`containerLogin ${isActive ? 'active' : ''}`} id="container">
                 <div className="form-containerLogin sign-up">
                     <form onSubmit={handleSubmit}>
@@ -183,7 +201,7 @@ const Login = () => {
                     </form>
                 </div>
                 <div className="form-containerLogin sign-in">
-                    <form>
+                    <form onSubmit={handleLogin}>
                         <h1>Sign In</h1>
                         <div className="social-icons">
                             <a href="#" className="icon"><i className="fa-brands fa-google-plus-g" /></a>
@@ -213,6 +231,8 @@ const Login = () => {
                     </div>
                 </div>
             </div>
+            </div>
+            
         </>
     )
 }
