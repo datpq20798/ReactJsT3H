@@ -21,7 +21,14 @@ export default function AuthProvider({ children }) {
           photoURL,
         });
         setIsLoading(false);
-        history.push('/');
+
+        // Check if the user is admin
+        if (email === 'admin@gmail.com') {
+          console.log(email)
+          history.push('/sysadmin');
+        } else {
+          history.push('/');
+        }
         return;
       }
 

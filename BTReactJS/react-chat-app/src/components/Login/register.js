@@ -9,6 +9,10 @@ import { AuthContext } from '../../Context/AuthProvider';
 
 
 export default function Register() {
+
+
+  
+
   const { user } = useContext(AuthContext);
   const history = useHistory();
 
@@ -21,7 +25,7 @@ export default function Register() {
     try {
       const { user } = await auth.createUserWithEmailAndPassword(email, password);
       if (user) {
-        let photoURL = null;
+        let photoURL = image;
         if (image) {
           // Logic xử lý ảnh
         }
@@ -37,6 +41,7 @@ export default function Register() {
 
         // Hiển thị thông báo đăng ký thành công
         message.success('Đăng ký thành công.');
+        
       }
     } catch (error) {
       // Xử lý lỗi khi đăng ký thất bại
@@ -47,6 +52,8 @@ export default function Register() {
 
   const handleUploadChange = (info) => {
     if (info.file.status === 'done') {
+      setImage(info.file.name)
+      console.log(info.file)
       message.success(`${info.file.name} file uploaded successfully`);
     } else if (info.file.status === 'error') {
       message.error(`${info.file.name} file upload failed.`);
@@ -66,7 +73,7 @@ export default function Register() {
       <div className="register-container">
         <Row justify='center' style={{ height: '100vh' }}>
           <Col span={8} className="register-form">
-            
+          <span className='title-header'>Register</span>
             <Input
               placeholder='Họ và tên'
               value={displayName}

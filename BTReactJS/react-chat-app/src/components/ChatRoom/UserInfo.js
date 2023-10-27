@@ -35,7 +35,7 @@ export default function UserInfo() {
       <Button
         ghost
         onClick={() => {
-          // clear state in App Provider when logout
+          // clear state trong App Provider khi logout
           clearState();
           auth.signOut();
         }}

@@ -7,18 +7,21 @@ import { AuthContext } from '../../Context/AuthProvider';
 export default function AddRoomModal() {
   const { isAddRoomVisible, setIsAddRoomVisible } = useContext(AppContext);
   const {
-    user: { uid },
+    user: { uid, email },
   } = useContext(AuthContext);
   const [form] = Form.useForm();
 
   const handleOk = () => {
     // handle logic
     // add new room to firestore
-    addDocument('rooms', { ...form.getFieldsValue(), members: [uid] });
+    
+    console.log(email)
+    addDocument('rooms', { ...form.getFieldsValue(), members: [uid], createBy: email});
 
-    // reset form value
+    // Reset giá trị của form
     form.resetFields();
 
+    //ẩn model thêm phòng
     setIsAddRoomVisible(false);
   };
 

@@ -1,15 +1,20 @@
 import React, { useState, useContext } from 'react';
 import { Row, Col, Button, Input, message } from 'antd';
-import { auth } from '../../firebase/config';
+import firebase, { auth } from '../../firebase/config';
 import './login.css';
-import { Link, navigate, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../../Context/AuthProvider';
+import { addDocument, generateKeywords } from '../../firebase/services';
 
+
+const googleProvider = new firebase.auth.GoogleAuthProvider();
 
 export default function Login() {
+
+
+  
   const { user } = useContext(AuthContext);
   const history = useHistory();
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -32,17 +37,39 @@ export default function Login() {
 
     }
   };
+  const handleLoginWithFb = async (provider) => {
+    const { additionalUserInfo, user } = await auth.signInWithPopup(provider);
+    try {
+      if (additionalUserInfo?.isNewUser) {
+        addDocument('users', {
+          displayName: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+          uid: user.uid,
+          providerId: additionalUserInfo.providerId,
+          keywords: generateKeywords(user.displayName?.toLowerCase()),
+        });
+        
+      }
+      message.success('Đăng nhập thành công.');
+    } catch (error) {
+      message.error('Đăng nhập thất bại. Vui lòng kiểm tra email và mật khẩu.');
+    }
+    
+    
+  }
   return (
     <>
       <div className="login-container">
         <Row justify='center' style={{ height: '100vh' }}>
           <Col span={8} className="login-form">
-          <span className='title-header'>Login</span>
+          <span className='title-header'>Login Chat</span>
           <div className="social-icons">
-              <a href="#" className="icon"><i className="fa-brands fa-google-plus-g" /></a>
-              <a href="#" className="icon"><i className="fa-brands fa-facebook-f" /></a>
-              <a href="#" className="icon"><i className="fa-brands fa-github" /></a>
-              <a href="#" className="icon"><i className="fa-brands fa-linkedin-in" /></a>
+              <button className="icon" onClick={() => handleLoginWithFb(googleProvider)}><i className="fa-brands fa-google-plus-g" /></button>
+              <button className="icon"><i className="fa-brands fa-facebook-f" /></button>
+              <button className="icon"><i className="fa-brands fa-github" /></button>
+              <button className="icon"><i className="fa-brands fa-linkedin-in" /></button>
+
             </div>
             <span className='title-content'>Hoặc dùng tài khoản email để đăng nhập</span>
             <br/>
