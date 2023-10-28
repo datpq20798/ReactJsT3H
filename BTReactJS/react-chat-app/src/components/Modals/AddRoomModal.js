@@ -1,22 +1,29 @@
 import React, { useContext } from 'react';
-import { Form, Modal, Input } from 'antd';
-import { AppContext } from '../../Context/AppProvider';
-import { addDocument } from '../../firebase/services';
+import { Form, Modal, Input, message } from 'antd';
+import { AppContext  } from '../../Context/AppProvider';
+import { addDocument  } from '../../firebase/services';
 import { AuthContext } from '../../Context/AuthProvider';
 
 export default function AddRoomModal() {
+ 
   const { isAddRoomVisible, setIsAddRoomVisible } = useContext(AppContext);
   const {
-    user: { uid, email },
+    user: { uid, email},
   } = useContext(AuthContext);
   const [form] = Form.useForm();
 
   const handleOk = () => {
-    // handle logic
-    // add new room to firestore
+
+    // add room mới vào firestore
+    const roomName = form.getFieldValue('name');
     
-    console.log(email)
-    addDocument('rooms', { ...form.getFieldsValue(), members: [uid], createBy: email});
+    
+    try {
+      addDocument('rooms', { ...form.getFieldsValue(), members: [uid], createBy: email});
+      message.success(`Tạo phòng ${roomName} thành công.`);
+    } catch (error) {
+      message.error('Tạo phòng thất bại');
+    }
 
     // Reset giá trị của form
     form.resetFields();
@@ -47,6 +54,9 @@ export default function AddRoomModal() {
           <Form.Item label='Mô tả' name='description'>
             <Input.TextArea placeholder='Nhập mô tả' />
           </Form.Item>
+          {/* <Form.Item label='Key' name='key'>
+            <Input disabled value={key} />
+          </Form.Item> */}
         </Form>
       </Modal>
     </div>

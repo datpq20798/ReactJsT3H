@@ -1,11 +1,13 @@
 import firebase, { db } from './config';
 
-export const addDocument = (collection, data) => {
+export const addDocument = async (collection, data) => {
   const query = db.collection(collection);
+
 
   query.add({
     ...data,
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+
   });
 };
 

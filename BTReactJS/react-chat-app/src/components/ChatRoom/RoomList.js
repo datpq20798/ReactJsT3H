@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
-import { Collapse, Typography, Button } from 'antd';
+import React, { useState } from 'react';
+import { Collapse, Typography, Button, message, Modal } from 'antd';
 import styled from 'styled-components';
-import { PlusSquareOutlined, DeleteOutlined, CheckCircleTwoTone  } from '@ant-design/icons';
+import { PlusSquareOutlined, DeleteOutlined, CheckCircleTwoTone } from '@ant-design/icons';
 import { AppContext } from '../../Context/AppProvider';
-
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 
 const { Panel } = Collapse;
 
@@ -40,52 +41,63 @@ const LinkStyled = styled(Typography.Link)`
 
 
 export default function RoomList() {
-  const { rooms, setIsAddRoomVisible, setSelectedRoomId, currentUser  } = React.useContext(AppContext);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const firestore = firebase.firestore();
+  const handleOk = async (roomId) => {
+    console.log(roomId)
+    await firestore.collection('rooms').doc(roomId).delete();
+    setIsModalOpen(false);
+    message.success('Xóa phòng thành công');
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+  const { rooms, setIsAddRoomVisible, setSelectedRoomId } = React.useContext(AppContext);
   const [selectedRoom, setSelectedRoom] = useState(null);
-  const handleAddRoom = () => {
+  const handleAddRoom = async () => {
     setIsAddRoomVisible(true);
   };
   const handleRoomClick = (roomId) => {
     setSelectedRoom(roomId === selectedRoom ? null : roomId);
     setSelectedRoomId(roomId);
-  };
-
-  const isCurrentUserRoomOwner = (roomId) => {
-    // Assuming each room object has an owner field representing the owner's user ID
-    const room = rooms.find((room) => room.id === roomId);
-    return room && room.owner === currentUser.id;
-  };
-  const handleDeleteRoom = (roomId) => {
-    if (isCurrentUserRoomOwner(roomId)) {
-     
-      console.log('Delete room with ID:', roomId);
-    } else {
-      
-      console.log('You do not have permission to delete this room.');
-    }
-  };
+  }
 
   return (
-    <Collapse ghost defaultActiveKey={['1']}>
-      <PanelStyled header='Danh sách các phòng' key='1'>
-        {rooms.map((room) => (
-          <RoomItemWrapper key={room.id}>
+    <>
+      <Collapse ghost defaultActiveKey={['1']}>
+        <PanelStyled header='Danh sách các phòng' key='1'>
+          {rooms.map((room) => (
+            <RoomItemWrapper key={room.id}>
 
-            <LinkStyled onClick={() => handleRoomClick(room.id)}>
-            {selectedRoom === room.id && <CheckCircleTwoTone twoToneColor="#52c41a" style={{ marginRight: '5px' }} />}
+              <LinkStyled onClick={() => handleRoomClick(room.id)}>
+                {selectedRoom === room.id && <CheckCircleTwoTone twoToneColor="#52c41a" style={{ marginRight: '5px' }} />}
 
-              {room.name}
+                {room.name}
+
+              </LinkStyled>
+              {/* onClick={() => handleOkDelete(room.id)} */}
               
-            </LinkStyled>
-            <Button type='text' icon={<DeleteOutlined />} danger onClick={() => handleDeleteRoom(room.id)}>
-              Xoá
-            </Button>
-          </RoomItemWrapper>
-        ))}
-        <Button type='text' icon={<PlusSquareOutlined />} className='add-room' onClick={handleAddRoom}>
-          Thêm phòng
-        </Button>
-      </PanelStyled>
-    </Collapse>
+              <Button type='text' icon={<DeleteOutlined />} danger onClick={showModal}>
+                Xoá
+              </Button>
+              <Modal title="Cảnh báo!!" onOk={() => handleOk(room.id)} onCancel={handleCancel} visible={isModalOpen}>
+                <p>Bạn có chắc chắn muốn xóa Room {room.name} này không?</p>
+              </Modal>
+            </RoomItemWrapper>
+          ))}
+          <Button type='text' icon={<PlusSquareOutlined />} className='add-room' onClick={handleAddRoom}>
+            Thêm phòng
+          </Button>
+        </PanelStyled>
+      </Collapse>
+
+
+
+    </>
+
+
   );
 }
