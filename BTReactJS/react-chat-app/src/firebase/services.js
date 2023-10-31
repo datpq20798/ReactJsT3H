@@ -1,5 +1,19 @@
 import firebase, { db } from './config';
 
+//Gen trường key trong users
+export const getNextUserKey = async () => {
+  const usersRef = db.collection('users');
+  const snapshot = await usersRef.orderBy('key', 'desc').limit(1).get();
+
+  if (snapshot.empty) {
+    return 1; // Nếu không có người dùng nào trong Firestore, key bắt đầu từ 1
+  } else {
+    const lastUser = snapshot.docs[0].data();
+    return lastUser.key + 1; // Trả về key tiếp theo
+  }
+};
+
+//add thông tin vào firestore
 export const addDocument = async (collection, data) => {
   const query = db.collection(collection);
 

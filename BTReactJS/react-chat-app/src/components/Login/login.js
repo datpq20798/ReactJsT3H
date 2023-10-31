@@ -5,19 +5,21 @@ import './login.css';
 import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../../Context/AuthProvider';
 import { addDocument, generateKeywords } from '../../firebase/services';
-
+import { getNextUserKey } from '../../firebase/services';
 
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 
+
+
 export default function Login() {
 
-
-  
   const { user } = useContext(AuthContext);
   const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+
+  
   const handleLogin = async () => {
     try {
       await auth.signInWithEmailAndPassword(email, password);
@@ -41,7 +43,9 @@ export default function Login() {
     const { additionalUserInfo, user } = await auth.signInWithPopup(provider);
     try {
       if (additionalUserInfo?.isNewUser) {
+        const nextUserKey = await getNextUserKey(); // Lấy key tiếp theo từ Firestore
         addDocument('users', {
+          key: nextUserKey,
           displayName: user.displayName,
           email: user.email,
           photoURL: user.photoURL,
@@ -49,15 +53,12 @@ export default function Login() {
           providerId: additionalUserInfo.providerId,
           keywords: generateKeywords(user.displayName?.toLowerCase()),
         });
-        
       }
       message.success('Đăng nhập thành công.');
     } catch (error) {
       message.error('Đăng nhập thất bại. Vui lòng kiểm tra email và mật khẩu.');
     }
-    
-    
-  }
+  };
   return (
     <>
       <div className="login-container">

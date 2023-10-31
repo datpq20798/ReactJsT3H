@@ -1,4 +1,4 @@
-import { UserAddOutlined } from '@ant-design/icons';
+import { UserAddOutlined, LinkOutlined  } from '@ant-design/icons';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Button, Tooltip, Avatar, Form, Input, Alert } from 'antd';
@@ -7,6 +7,7 @@ import { AppContext } from '../../Context/AppProvider';
 import { addDocument } from '../../firebase/services';
 import { AuthContext } from '../../Context/AuthProvider';
 import useFirestore from '../../hooks/useFirestore';
+import { storage } from '../../firebase/config';
 
 const HeaderStyled = styled.div`
   display: flex;
@@ -71,6 +72,11 @@ const MessageListStyled = styled.div`
 `;
 
 export default function ChatWindow() {
+  const [image, setImage] = useState(null); // Thêm state để lưu trữ ảnh gửi đi
+  // const handleImageChange = (e) => {
+  //   const file = e.target.files[0];
+  //   setImage(file);
+  // };
   const { selectedRoom, members, setIsInviteMemberVisible } =
     useContext(AppContext);
   const {
@@ -85,14 +91,61 @@ export default function ChatWindow() {
     setInputValue(e.target.value);
   };
 
-  const handleOnSubmit = () => {
-    addDocument('messages', {
-      text: inputValue,
-      uid,
-      photoURL,
-      roomId: selectedRoom.id,
-      displayName,
-    });
+  const handleImageUpload = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const storageRef = storage.ref();
+        const imageRef = storageRef.child(`images/${file.name}`);
+        imageRef.put(file).then(() => {
+          imageRef.getDownloadURL().then((imageUrl) => {
+            addDocument('messages', {
+              imageUrl,
+              uid,
+              photoURL,
+              roomId: selectedRoom.id,
+              displayName,
+            });
+          });
+        });
+      }
+    };
+    input.click();
+  };
+
+
+  const handleOnSubmit = async () => {
+    if (image) {
+      const storageRef = storage.ref();
+      const imageRef = storageRef.child(`images/${image.name}`);
+      await imageRef.put(image);
+
+      const imageUrl = await imageRef.getDownloadURL();
+
+      addDocument('messages', {
+        imageUrl,
+        uid,
+        photoURL,
+        roomId: selectedRoom.id,
+        displayName,
+      });
+
+      // Reset state
+      setImage(null);
+    } else {
+      addDocument('messages', {
+        text: inputValue,
+        uid,
+        photoURL,
+        roomId: selectedRoom.id,
+        displayName,
+      });
+    }
+    // Lấy URL của ảnh
+
 
     form.resetFields(['message']);
 
@@ -164,6 +217,7 @@ export default function ChatWindow() {
                   photoURL={mes.photoURL}
                   displayName={mes.displayName}
                   createdAt={mes.createdAt}
+                  imageUrl={mes.imageUrl}
                 />
               ))}
             </MessageListStyled>
@@ -178,6 +232,7 @@ export default function ChatWindow() {
                   autoComplete='off'
                 />
               </Form.Item>
+              <LinkOutlined onClick={handleImageUpload} style={{ fontSize: '18px', cursor: 'pointer', margin: '0 8px' }} />
               <Button type='primary' onClick={handleOnSubmit}>
                 Gửi
               </Button>

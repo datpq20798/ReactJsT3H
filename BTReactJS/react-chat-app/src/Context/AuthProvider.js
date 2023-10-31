@@ -21,7 +21,7 @@ export default function AuthProvider({ children }) {
           photoURL,
         });
         setIsLoading(false);
-
+        console.log(user)
         // Check if the user is admin
         if (email === 'admin@gmail.com') {
           console.log(email)

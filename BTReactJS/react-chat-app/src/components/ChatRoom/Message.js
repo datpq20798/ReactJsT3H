@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Typography } from 'antd';
+import { Avatar, Typography, Image } from 'antd';
 import styled from 'styled-components';
 import { formatRelative } from 'date-fns/esm';
 
@@ -31,6 +31,10 @@ const WrapperStyled = styled.div`
     color: #fff; /* Màu chữ của phần text khi được gửi đi */
     align-self: flex-end; /* Hiển thị phần text ở bên phải */
   }
+  .ant-image-mask{
+    margin-left: 30px;
+    margin-top: 5px
+  }
 `;
 
 function formatDate(seconds) {
@@ -46,7 +50,8 @@ function formatDate(seconds) {
   return formattedDate;
 }
 
-export default function Message({ text, displayName, createdAt, photoURL }) {
+export default function Message({ text, imageUrl, displayName, createdAt, photoURL }) {
+
   return (
     <WrapperStyled>
       <div>
@@ -59,7 +64,12 @@ export default function Message({ text, displayName, createdAt, photoURL }) {
         </Typography.Text>
       </div>
       <div>
-        <Typography.Text className='content sent'>{text}</Typography.Text>
+        {imageUrl ? (
+          <Image src={imageUrl} alt='Ảnh' style={{ width: '200px', paddingLeft: '30px', marginTop: '5px' }} />
+          
+        ) : (
+          <Typography.Text className='content sent'>{text}</Typography.Text>
+        )}
       </div>
     </WrapperStyled>
   );

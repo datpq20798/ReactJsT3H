@@ -44,6 +44,7 @@ export default function AppProvider({ children }) {
     setIsInviteMemberVisible(false);
   };
 
+
   return (
     <AppContext.Provider
       value={{
@@ -57,6 +58,7 @@ export default function AppProvider({ children }) {
         isInviteMemberVisible,
         setIsInviteMemberVisible,
         clearState,
+        
       }}
     >
       {children}

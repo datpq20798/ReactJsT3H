@@ -22,7 +22,8 @@ const db = firebase.firestore();
 const storage = firebase.storage();
 const storageRef = storage.ref();
 const deleteObject  = firebase.storage();
+const ref = firebase.storage();
 
 
-export { db, auth, storageRef, storage, deleteObject  };
+export { db, auth, storageRef, storage, deleteObject,ref  };
 export default firebase;

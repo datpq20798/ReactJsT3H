@@ -1,7 +1,6 @@
 import './App.css';
 // import Login from './components/Login';
 // import Login2 from './components/Login/register';
-import test from './components/Login/test';
 import Login from './components/Login/login';
 import IndexAdmin from './components/Admin/IndexAdmin';
 import Register from './components/Login/register';
@@ -11,7 +10,6 @@ import AuthProvider from './Context/AuthProvider';
 import AppProvider from './Context/AppProvider';
 import AddRoomModal from './components/Modals/AddRoomModal';
 import InviteMemberModal from './components/Modals/InviteMemberModal';
-
 function App() {
   return (
     <BrowserRouter>

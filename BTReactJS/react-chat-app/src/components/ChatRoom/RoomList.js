@@ -42,17 +42,25 @@ const LinkStyled = styled(Typography.Link)`
 
 export default function RoomList() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
+  const [selectedRoomIdToDelete, setSelectedRoomIdToDelete] = useState(null);
+  
+
+  const showModal = (roomId) => {
+    setSelectedRoomIdToDelete(roomId)
+    console.log(roomId)
     setIsModalOpen(true);
   };
+
   const firestore = firebase.firestore();
-  const handleOk = async (roomId) => {
+  const handleOk = async () => {
+    const roomId = selectedRoomIdToDelete;
     console.log(roomId)
     await firestore.collection('rooms').doc(roomId).delete();
     setIsModalOpen(false);
-    message.success('Xóa phòng thành công');
+    message.success(`Xóa phòng thành công`);
   };
   const handleCancel = () => {
+    console.log(rooms)
     setIsModalOpen(false);
   };
   const { rooms, setIsAddRoomVisible, setSelectedRoomId } = React.useContext(AppContext);
@@ -80,11 +88,11 @@ export default function RoomList() {
               </LinkStyled>
               {/* onClick={() => handleOkDelete(room.id)} */}
               
-              <Button type='text' icon={<DeleteOutlined />} danger onClick={showModal}>
+              <Button type='text' icon={<DeleteOutlined />} danger onClick={() => showModal(room.id)}>
                 Xoá
               </Button>
-              <Modal title="Cảnh báo!!" onOk={() => handleOk(room.id)} onCancel={handleCancel} visible={isModalOpen}>
-                <p>Bạn có chắc chắn muốn xóa Room {room.name} này không?</p>
+              <Modal title="Cảnh báo!!" onOk={handleOk} onCancel={handleCancel} visible={isModalOpen}>
+                <p>Bạn có chắc chắn muốn xóa Room không?</p>
               </Modal>
             </RoomItemWrapper>
           ))}
