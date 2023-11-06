@@ -18,6 +18,7 @@ export default function Login() {
   const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false); // Thêm state loading
 
 
   const handelAdmin = (e) => {
@@ -27,14 +28,15 @@ export default function Login() {
     setPassword(passAdmin)
   }
   const handleLogin = async () => {
+    setIsLoading(true); // Khi bắt đầu đăng nhập, set isLoading thành true
     try {
       await auth.signInWithEmailAndPassword(email, password);
-      // Đăng nhập thành công
       message.success('Đăng nhập thành công.');
     } catch (error) {
-      // Xử lý lỗi khi đăng nhập thất bại
       console.error('Error logging in: ', error.message);
       message.error('Đăng nhập thất bại. Vui lòng kiểm tra email và mật khẩu.');
+    } finally {
+      setIsLoading(false); // Sau khi xử lý đăng nhập xong, set isLoading thành false
     }
   };
   const handleRegistrationClick = () => {
@@ -70,18 +72,18 @@ export default function Login() {
       <div className="login-container">
         <Row justify='center' style={{ height: '100vh' }}>
           <Col span={8} className="login-form">
-          <span className='title-header'>Login Chat</span>
-          <div className="social-icons">
+            <span className='title-header'>Login Chat</span>
+            <div className="social-icons">
               <button className="icon" onClick={() => handleLoginWithFb(googleProvider)}><i className="fa-brands fa-google-plus-g" /></button>
               <button className="icon"><i className="fa-brands fa-facebook-f" /></button>
               <button className="icon"><i className="fa-brands fa-github" /></button>
               <button className="icon"><i className="fa-brands fa-linkedin-in" /></button>
               <button className="icon" onClick={handelAdmin} >Ad</button>
-              
+
             </div>
             <span className='title-content'>Hoặc dùng tài khoản email để đăng nhập</span>
-            <br/>
-            <br/>
+            <br />
+            <br />
             <Input
               placeholder='Email'
               value={email}
@@ -94,14 +96,15 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
               className="login-input"
             />
-            <span style={{float: 'right'}}>Bạn chưa có tài khoản?<Button onClick={handleRegistrationClick } type='link'>Đăng ký</Button></span>
+            <span style={{ float: 'right' }}>Bạn chưa có tài khoản?<Button onClick={handleRegistrationClick} type='link'>Đăng ký</Button></span>
             <Button
               className="login-button"
               onClick={handleLogin}
+              loading={isLoading} // Sử dụng prop loading để hiển thị loading khi isLoading là true
             >
               Đăng nhập
             </Button>
-            
+
           </Col>
         </Row>
       </div>

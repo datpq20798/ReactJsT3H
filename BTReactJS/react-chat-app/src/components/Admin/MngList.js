@@ -60,6 +60,7 @@ const MngList = ({ setSelectedComponent }) => {
                 <Button type='link' onClick={handleRoomClick}>
                 {isRoomSelected && <CheckCircleTwoTone />} Danh sách phòng 
                 </Button>
+                <br></br>
                 <Button type='link' onClick={handleUserClick}>
                 {isUserSelected && <CheckCircleTwoTone />} Danh sách người dùng 
                 </Button>
