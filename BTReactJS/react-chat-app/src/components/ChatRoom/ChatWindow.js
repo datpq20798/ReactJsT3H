@@ -72,6 +72,7 @@ const MessageListStyled = styled.div`
 `;
 
 export default function ChatWindow() {
+  
   const [image, setImage] = useState(null); // Thêm state để lưu trữ ảnh gửi đi
   // const handleImageChange = (e) => {
   //   const file = e.target.files[0];

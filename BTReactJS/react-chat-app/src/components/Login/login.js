@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../../Context/AuthProvider';
 import { addDocument, generateKeywords } from '../../firebase/services';
 import { getNextUserKey } from '../../firebase/services';
+import { set } from 'lodash';
 
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 
@@ -19,7 +20,12 @@ export default function Login() {
   const [password, setPassword] = useState('');
 
 
-  
+  const handelAdmin = (e) => {
+    const emailAdmin = 'admin@gmail.com'
+    const passAdmin = '123456'
+    setEmail(emailAdmin)
+    setPassword(passAdmin)
+  }
   const handleLogin = async () => {
     try {
       await auth.signInWithEmailAndPassword(email, password);
@@ -70,7 +76,8 @@ export default function Login() {
               <button className="icon"><i className="fa-brands fa-facebook-f" /></button>
               <button className="icon"><i className="fa-brands fa-github" /></button>
               <button className="icon"><i className="fa-brands fa-linkedin-in" /></button>
-
+              <button className="icon" onClick={handelAdmin} >Ad</button>
+              
             </div>
             <span className='title-content'>Hoặc dùng tài khoản email để đăng nhập</span>
             <br/>
@@ -94,6 +101,7 @@ export default function Login() {
             >
               Đăng nhập
             </Button>
+            
           </Col>
         </Row>
       </div>

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Avatar, Typography, Image } from 'antd';
+import React, { useState } from 'react';
+import { Avatar, Typography, Image, Spin, Space } from 'antd';
 import styled from 'styled-components';
 import { formatRelative } from 'date-fns/esm';
 
@@ -51,6 +51,11 @@ function formatDate(seconds) {
 }
 
 export default function Message({ text, imageUrl, displayName, createdAt, photoURL }) {
+  const [loading, setLoading] = useState(true);
+
+  const handleImageLoad = () => {
+    setLoading(false);
+  };
 
   return (
     <WrapperStyled>
@@ -65,12 +70,37 @@ export default function Message({ text, imageUrl, displayName, createdAt, photoU
       </div>
       <div>
         {imageUrl ? (
-          <Image src={imageUrl} alt='Ảnh' style={{ width: '200px', paddingLeft: '30px', marginTop: '5px' }} />
-          
+          <>
+            {loading && <div style={{padding: '10px 10px'}}><Space>
+              <Spin tip="Loading">
+                <div className="content" />
+              </Spin>
+            </Space></div>}
+            <Image
+              src={imageUrl}
+              alt='Ảnh'
+              style={{ width: '200px', paddingLeft: '30px', marginTop: '5px', display: loading ? 'none' : 'block' }}
+              onLoad={handleImageLoad}
+            />
+          </>
         ) : (
+        
           <Typography.Text className='content sent'>{text}</Typography.Text>
+      
+          
+          
         )}
       </div>
     </WrapperStyled>
   );
 }
+
+
+
+
+
+
+
+
+
+

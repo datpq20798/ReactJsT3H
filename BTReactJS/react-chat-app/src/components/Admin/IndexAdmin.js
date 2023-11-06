@@ -3,9 +3,10 @@ import { Row, Col } from 'antd';
 import SidebarAdmin from './SidebarAdmin';
 import MngRoom from './MngRoom';
 import MngUser from './MngUser'; // Import MngUser component
+import Home from './Home';
 
 const IndexAdmin = () => {
-  const [selectedComponent, setSelectedComponent] = useState('MngAdmin'); // Default to MngAdmin component
+  const [selectedComponent, setSelectedComponent] = useState(''); // Default to MngAdmin component
 
   const renderSelectedComponent = () => {
     if (selectedComponent === 'MngAdmin') {
@@ -13,7 +14,7 @@ const IndexAdmin = () => {
     } else if (selectedComponent === 'MngUser') {
       return <MngUser />;
     }
-    return null;
+    return <Home/>;
   };
 
   return (

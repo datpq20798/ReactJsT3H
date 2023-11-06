@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Form, Modal, Input, message } from 'antd';
 import { AppContext  } from '../../Context/AppProvider';
-import { addDocument  } from '../../firebase/services';
+import { addDocument, getNextRoomKey   } from '../../firebase/services';
 import { AuthContext } from '../../Context/AuthProvider';
 
 export default function AddRoomModal() {
@@ -12,14 +12,15 @@ export default function AddRoomModal() {
   } = useContext(AuthContext);
   const [form] = Form.useForm();
 
-  const handleOk = () => {
+  const handleOk = async () => {
 
     // add room mới vào firestore
     const roomName = form.getFieldValue('name');
     
+    const nextRoomKey = await getNextRoomKey();
     
     try {
-      addDocument('rooms', { ...form.getFieldsValue(), members: [uid], createBy: email});
+      addDocument('rooms', { ...form.getFieldsValue(), members: [uid], createBy: email, key: nextRoomKey});
       message.success(`Tạo phòng ${roomName} thành công.`);
     } catch (error) {
       message.error('Tạo phòng thất bại');

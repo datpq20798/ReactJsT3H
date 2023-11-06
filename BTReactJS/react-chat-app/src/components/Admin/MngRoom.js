@@ -1,132 +1,104 @@
-import { MenuOutlined } from '@ant-design/icons';
-import { DndContext } from '@dnd-kit/core';
-import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
-import {
-  arrayMove,
-  SortableContext,
-  useSortable,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import React, { useState } from 'react';
-import { Table } from 'antd';
-const columns = [
-  {
-    key: 'sort',
-  },
-  {
-    title: 'Ảnh',
-    dataIndex: 'avatar',
-  },
-  {
-    title: 'Tên',
-    dataIndex: 'displayName',
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-  },
-];
-const Row = ({ children, ...props }) => {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    setActivatorNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({
-    id: props['data-row-key'],
-  });
-  const style = {
-    ...props.style,
-    transform: CSS.Transform.toString(
-      transform && {
-        ...transform,
-        scaleY: 1,
-      },
-    ),
-    transition,
-    ...(isDragging
-      ? {
-          position: 'relative',
-          zIndex: 9999,
-        }
-      : {}),
-  };
-  return (
-    <tr {...props} ref={setNodeRef} style={style} {...attributes}>
-      {React.Children.map(children, (child) => {
-        if (child.key === 'sort') {
-          return React.cloneElement(child, {
-            children: (
-              <MenuOutlined
-                ref={setActivatorNodeRef}
-                style={{
-                  touchAction: 'none',
-                  cursor: 'move',
-                }}
-                {...listeners}
-              />
-            ),
-          });
-        }
-        return child;
-      })}
-    </tr>
-  );
-};
+import React, { useState, useEffect } from 'react';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import { Table, Avatar, Spin, Pagination, Modal, Button } from 'antd';
+import { db } from '../../firebase/config';
+import moment from 'moment';
+import 'moment/locale/vi';
+
 const MngRoom = () => {
-  const [dataSource, setDataSource] = useState([
+  const [loading, setLoading] = useState(true);
+  const [dataSource, setDataSource] = useState([]);
+
+
+  const columns = [
     {
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      address:
-        'Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text Long text',
+      title: 'Tên phòng',
+      dataIndex: 'name',
+      key: 'name',
     },
     {
-      key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
+      title: 'Mô tả phòng',
+      dataIndex: 'description',
+      key: 'description',
     },
     {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
+      title: 'Người tạo',
+      dataIndex: 'createBy',
+      key: 'createBy',
     },
-  ]);
-  const onDragEnd = ({ active, over }) => {
-    if (active.id !== over?.id) {
-      setDataSource((previous) => {
-        const activeIndex = previous.findIndex((i) => i.key === active.id);
-        const overIndex = previous.findIndex((i) => i.key === over?.id);
-        return arrayMove(previous, activeIndex, overIndex);
-      });
-    }
-  };
+    {
+      title: 'Thời gian tạo',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+  
+    },
+    {
+      title: 'Action',
+      dataIndex: '',
+      key: 'x',
+      render: () => <a>Delete</a>,
+    },
+  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const usersCollection = db.collection('rooms');
+        const usersSnapshot = await usersCollection.get();
+        const usersData = [];
+        usersSnapshot.forEach((doc) => {
+          const createdAt = moment(doc.data().createdAt, 'MMMM D, YYYY [at] h:mm:ss A UTCZ').locale('vi').format('MMMM D, YYYY [at] h:mm:ss A');
+          usersData.push({ key: doc.id, ...doc.data(), createdAt });
+        });
+        setDataSource(usersData);
+        setLoading(false); // Ẩn loading khi dữ liệu đã được tải
+      } catch (error) {
+        console.error('Error fetching users: ', error);
+        setLoading(false); // Ẩn loading nếu có lỗi khi tải dữ liệu
+      }
+    };
+  
+    fetchData();
+  }, []);
+
+
   return (
-    <DndContext modifiers={[restrictToVerticalAxis]} onDragEnd={onDragEnd}>
-      <SortableContext
-        // rowKey array
-        items={dataSource.map((i) => i.key)}
-        strategy={verticalListSortingStrategy}
-      >
-        <Table
-          components={{
-            body: {
-              row: Row,
-            },
-          }}
-          rowKey="key"
-          columns={columns}
-          dataSource={dataSource}
-        />
-      </SortableContext>
-    </DndContext>
-  );
-};
+
+    <div style={{ padding: '20px' }}>
+      {loading && (
+                <Spin tip="Loading..." size="large" style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '100vh',
+                }} />
+            )}
+      <Table
+        columns={columns}
+        expandable={{
+          expandedRowRender: (record) => (
+            <p
+              style={{
+                margin: 0,
+              }}
+            >
+              {record.members}
+            </p>
+          ),
+          rowExpandable: (record) => record.name !== 'Not Expandable',
+        }}
+        dataSource={dataSource}
+      />
+    </div>
+
+
+
+  )
+}
+
+
+
+
+
+
 export default MngRoom;
